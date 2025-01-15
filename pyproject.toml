@@ -5,11 +5,12 @@ requires = [ "cython", "numpy", "scikit-build-core" ]
 
 [project]
 name = "multispline"
-version = "0.8.4"
+version = "0.8.3"
 authors = [
 	{name = "Zach Nasipak"}
 ]
 description = "Cubic splines in multiple dimensions"
+readme = "README.md"
 classifiers = [
 	"Programming Language :: Python :: 3",
 	'License :: OSI Approved :: MIT License',
@@ -21,9 +22,7 @@ requires-python = ">=3.7"
 dependencies = [
     "numpy"
 ]
-dynamic = [
-    "readme",
-]
+
 [tool.cibuildwheel]
 # Disable building PyPy wheels on all platforms
 skip = "pp*"
