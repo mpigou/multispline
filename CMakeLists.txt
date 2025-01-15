@@ -30,6 +30,6 @@ add_custom_command(
 python_add_library(splinecy MODULE cython/spline_wrap.cpp cpp/src/spline.cpp
                      WITH_SOABI)
 target_include_directories(splinecy PRIVATE ${Python_NumPy_INCLUDE_DIR} "cpp/include")
+set_property(TARGET splinecy PROPERTY CXX_STANDARD 11)
 
-install(TARGETS splinecy
-DESTINATION "./")
+install(TARGETS splinecy DESTINATION "./")
