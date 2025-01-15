@@ -44,6 +44,8 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.21.3
+        env:
+          CIBW_ARCHS_LINUX: auto aarch64
 
       - uses: actions/upload-artifact@v4
         with:
@@ -82,5 +84,5 @@ jobs:
 
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          # repository-url: https://test.pypi.org/legacy/
+          repository-url: https://test.pypi.org/legacy/
           verbose: true
