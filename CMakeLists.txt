@@ -1,0 +1,35 @@
+# =============================================
+# == multispline project CMake configuration ==
+# =============================================
+
+# ---- CMake related definitions ----
+cmake_minimum_required(VERSION 3.15...3.31)
+
+# ---- Main project definition ----
+project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION}
+        LANGUAGES CXX)
+
+# ---- Find required dependencies ----
+find_package(Python COMPONENTS Interpreter Development.Module NumPy REQUIRED)
+
+# Define the splinecy target
+
+add_custom_command(
+    OUTPUT "cython/spline_wrap.cpp"
+    COMMENT
+    "Using Cython to build 'spline_wrap.cpp' from 'spline_wrap.pyx'."
+    COMMAND
+      Python::Interpreter ARGS -m cython
+      "${CMAKE_CURRENT_SOURCE_DIR}/cython/spline_wrap.pyx" --output-file
+      "${CMAKE_CURRENT_BINARY_DIR}/cython/spline_wrap.cpp" -3 -+
+      --module-name "splinecy" -I "${CMAKE_CURRENT_SOURCE_DIR}/cpp/include"
+    DEPENDS "cython/spline_wrap.pyx"
+    VERBATIM
+)
+
+python_add_library(splinecy MODULE cython/spline_wrap.cpp cpp/src/spline.cpp
+                     WITH_SOABI)
+target_include_directories(splinecy PRIVATE ${Python_NumPy_INCLUDE_DIR} "cpp/include")
+
+install(TARGETS splinecy
+DESTINATION "./")

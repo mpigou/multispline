@@ -1,13 +1,11 @@
 [build-system]
-requires = [
-	"setuptools",
-	"cython",
-	"numpy",
-]
-build-backend = "setuptools.build_meta"
+build-backend = "scikit_build_core.build"
+
+requires = [ "cython", "numpy", "scikit-build-core" ]
 
 [project]
 name = "multispline"
+version = "0.8.2"
 authors = [
 	{name = "Zach Nasipak"}
 ]
@@ -24,8 +22,13 @@ dependencies = [
 ]
 dynamic = [
     "readme",
-	"version",
 ]
 [tool.cibuildwheel]
 # Disable building PyPy wheels on all platforms
 skip = "pp*"
+
+[tool.scikit-build]
+sdist.include = [ "cpp/", 'cython/' ]
+sdist.exclude = ["tutorial*", ".github/", ".gitignore" ]
+wheel.packages = [ "multispline" ]
+wheel.exclude = [ "**.cpp", "**.hpp", "**.pyx", "**/CMakeLists.txt"]
