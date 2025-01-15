@@ -32,7 +32,7 @@ jobs:
 
   build_wheels:
     needs: build_and_run_tests
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }} ${{ matrix.arch_linux }} ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -42,21 +42,23 @@ jobs:
           - os: ubuntu-latest
             arch_linux: x86_64
             cibw_skip: pp* *manylinux*
+            target: musllinux
           - os: ubuntu-latest
             arch_linux: i686
             cibw_skip: pp* *manylinux*
-          - os: ubuntu-latest
-            arch_linux: aarch64
-            cibw_skip: pp* *manylinux*
+            target: musllinux
           - os: ubuntu-latest
             arch_linux: x86_64
             cibw_skip: pp* *musllinux*
+            target: manylinux
           - os: ubuntu-latest
             arch_linux: i686
             cibw_skip: pp* *musllinux*
+            target: manylinux
           - os: ubuntu-latest
             arch_linux: aarch64
             cibw_skip: pp* *musllinux*
+            target: manylinux
 
     steps:
       - uses: actions/checkout@v4
@@ -67,7 +69,7 @@ jobs:
         with:
           platforms: all
 
-      - name: Build wheels (Linux)
+      - name: Build wheels (Linux ${{ matrix.arch_linux }}-${{ matrix.target }} )
         if: ${{ matrix.arch_linux }}
         uses: pypa/cibuildwheel@v2.22.0
         env:
